@@ -2,26 +2,32 @@ package fp
 
 import (
 	"strconv"
+
+	"github.com/samber/lo"
 )
 
-// Can `ComputeTotal` be rewritten using functional programming concepts?
-
 func ComputeTotal(list []string) int {
-	var (
-		ints  []int
-		total = 0
-	)
+	ints := toInts(list)
+	return sum(ints)
 
-	for _, str := range list {
-		val, err := strconv.Atoi(str)
-		if err == nil {
-			ints = append(ints, val)
-		}
-	}
+	// Or even shorter, without the helpers:
+	//return lo.Sum(
+	//	lo.Map(list, func(str string, _ int) int {
+	//		val, _ := lo.TryOr(func() (int, error) { return strconv.Atoi(str) }, 0)
+	//		return val
+	//	}),
+	//)
+}
 
-	for _, val := range ints {
-		total += val
-	}
+func toInts(list []string) []int {
+	return lo.Map(list, func(str string, _ int) int {
+		val, _ := lo.TryOr(func() (int, error) { return strconv.Atoi(str) }, 0)
+		return val
+	})
+}
 
-	return total
+func sum(ints []int) int {
+	return lo.Reduce(ints, func(acc int, val int, _ int) int {
+		return acc + val
+	}, 0)
 }
