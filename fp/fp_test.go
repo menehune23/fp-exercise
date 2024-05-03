@@ -1,29 +1,23 @@
 package fp_test
 
 import (
+	"reflect"
 	"testing"
 
 	"fp-exercise/fp"
 )
 
-func TestComputeTotal_EmptyList(t *testing.T) {
-	expect(t, fp.ComputeTotal(nil), 0)
+func TestSimulateTrafficLight(t *testing.T) {
+	expectEqual(t,
+		fp.SimulateTrafficLight("red", 5),
+		[]string{"red", "green", "yellow", "red", "green"},
+	)
 }
 
-func TestComputeTotal_IgnoresNonIntegers(t *testing.T) {
-	expect(t, fp.ComputeTotal([]string{
-		"1.0",
-		"1",
-		"2.5",
-		"x",
-		"-3",
-	}), -2)
-}
-
-func expect(t *testing.T, actual int, expected int) {
+func expectEqual(t *testing.T, actual any, expected any) {
 	t.Helper()
 
-	if actual != expected {
-		t.Fatalf("expected %d to be %d", actual, expected)
+	if !reflect.DeepEqual(actual, expected) {
+		t.Fatalf("Expected %s to equal %s", actual, expected)
 	}
 }

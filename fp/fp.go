@@ -1,27 +1,21 @@
 package fp
 
-import (
-	"strconv"
-)
+func SimulateTrafficLight(start string, iterations int) []string {
+	var lights []string
+	var state = start
 
-// Can `ComputeTotal` be rewritten using functional programming concepts?
+	for i := 0; i < iterations; i++ {
+		lights = append(lights, state)
 
-func ComputeTotal(list []string) int {
-	var (
-		ints  []int
-		total = 0
-	)
-
-	for _, str := range list {
-		val, err := strconv.Atoi(str)
-		if err == nil {
-			ints = append(ints, val)
+		switch state {
+		case "green":
+			state = "yellow"
+		case "yellow":
+			state = "red"
+		case "red":
+			state = "green"
 		}
 	}
 
-	for _, val := range ints {
-		total += val
-	}
-
-	return total
+	return lights
 }
